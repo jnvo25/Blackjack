@@ -1,0 +1,41 @@
+# Introduction
+### Title: Blackjack
+### Project size: 1000+ lines
+### Number of variables: about 45
+### Number of methods: 39
+Blackjack, also known as Twenty-One, is one of the most popular card games played at casinos. Because I always hear about blackjack but have never learned the rules to play the game, I decided to recreate it for this project in order to finally understand why people love this game so much. 
+The game uses a standard 52-card pack, but it is most common to use a several decks shuffled together. The object of the game is to try to beat the dealer by getting a card hand of value closest to 21 as possible. 2 cards are dealt in the beginning of the round after bets are placed and players are given one card at a time until they stand or have a value over 21. Once the players are all served, the dealer deals himself cards until his total reaches over 17. Next the hands are compared and those who have hand values over 21 lose their bet. Those who beat the dealer’s value receive their bet back plus 50%. Others whose values are below that of the dealer’s lose their bet. 
+In addition to this basic play, there are 3 types of options a player can do in the beginning round. First, if the player’s first two cards are of the same denomination, he may choose to split the pair and have 2 hands to play with. He must, however, bet an equal amount to his original to do this. Second, the player can double down if his original hand values to 9, 10, or 11. Once doubling down, the player can only get one more card. Lastly, players are offered insurance if the dealer’s faceup card is an ace. Any of the players can make a side bet up to half the original bet that the dealer’s hand will be a blackjack. Insurance wins give the player double their insurance bet, while their main bet is compromised.
+
+## Game Play
+Upon running the program, the player is greeted with the menu which gives the player an option to play the game, get player statistics, or exit. If the player chooses to play the game, the current funds available to bet will be displayed in addition to a prompt for a bet within a range calculated by the player’s total funds. Placing a bet will take the player to the initial stage where 2 cards are dealt to the player and the dealer. The dealer will display only one card and if that card is an ace, the player will be asked whether he wants to put down an insurance bet. Otherwise, the player will see his own cards and have a menu according to what type of hand he has. If the player is able to double down or split, it will add that to the options the player is able to select. Upon making a move the player will continue until he decides to stand or busts. When the player wants to exit, entering ‘0’ in the betting menu will take the user back to the original menu. In this menu, the player can select ‘Get Player Statistics’ which displays the stats from the last game played. Stats include highest bet won, highest win streak, and highest total funds.
+
+
+
+# Data Structures and Algorithms
+## Recursions & Recursive Sort
+I used recursions in order to sort the highscores that players get and compares them with each other. The players are able to enter their name in the beginning of the program, thus allowing their name to be associated with the score when retrieving the highscore list in the menu. This list is sorted every time it is written. The sort used to do this is Merge Sort.
+
+## Hashing
+The hash function I used was RSHash. Hashing was used to encrypt the password to access the game to set the starting value of each game of blackjack. The password is “holymackeral” and its hash is “1252407096” which is stored in “password.dat”. When the user enters the password, it hashes the password and compares it with the hash that is stored.
+
+## Trees
+I used a binary tree to hold the score data of the player in order to have an efficient way to retrieve the highest score received. The scores are split and the right most node is the largest score possible.
+
+
+
+# Developmental Summary
+## Version 1
+The first version of the blackjack application consisted of various standard library containers to hold data. A card class was created to hold the data of every card used in the game and held in a deque to act as a deck. The deque was allowed for pushing and popping cards into the player hands and provided a simple way of managing several cards. The players were represented by a list which held a pair of a vector and integer value. The vector held the current cards they hold while the integer value is what the value of the hand was. Holding the value of the hand separately and updating as cards were added reduced the number of calculations executed every time the value was used.
+The error in this version of blackjack was its use of the break statement to end loops. This was used within the version because statements were so large that flags would have been lost within the code. Therefore, I opted to use the break statement so that it would be easily seen what the code was going to do. This error is fixed in the final version.
+## Code Breakdown
+The final version of this blackjack application relies heavily on classes for organization. My organization takes inspiration from the Model-View-Controller design pattern which separates logic from its components and output to the user.   
+## Card Class
+The card class holds a rank and a suit that is initialized with the variables passed through the constructor. These variables are represented with integers. Suits: 1 for Clubs, 2 for Diamonds, 3 for Hearts, 4 for Spades. Ranks: 1 for Ace, 2-10 are Pip Value, 11 for Jack, 12 for Queen, and 13 for King. Another variable called ‘ace’ holds a Boolean value and returns true if the card were an ace. This was necessary because the ace is special in blackjack in that it can hold a value of 1 or 11 depending on the circumstance and therefore easily determining whether a card was an ace without using comparison operator proved useful.
+Important methods in this class are ‘getSuit’, ‘getRank’, and ‘getRankValue’. ‘getSuit’ and ‘getRank’ returns a string of the name of the card which is easily used to output to the user their hand. ‘getRankValue’ reads the rank and outputs the value of the card in terms of blackjack. Aces are given a 0 value because they are interpreted by the game itself since its value is dynamic.
+## Deck Class
+The deck class is based on a deque of cards which allows for efficient insertion and deletion at the ends of the container which is the primary function of a deck. Upon initiating this class,  the deque is filled with cards of every type possible and shuffled using its own ‘shuffleDeck’ method. There are 3 methods in this class which manipulates this deque. ‘shuffleDeck’ uses the ‘random_shuffle’ algorithm to shuffle the deck a random number of times. ‘dealCard’ returns a Card which is removed from the deque of cards and used in the future to fill player hands. ‘resetDeck’ clears the deque and creates a new deck of shuffled cards.
+## Player Class
+A blackjack player can have up to 4 hands at a time due to the rule that allows players to split their hand. Because of this, their hands are held in a vector. Hands themselves are also vectors so each player has a ‘hands’ variable that is a vector of Card vectors. The most important method of the class is the ‘createHand’. There are 2 versions of the ‘createHand’, one that takes no input and one that takes a card as input. The no input version pushes an empty vector into the player’s hands while the card input version pushes a new vector with the card passed. The card input version is used when the player wants to split a hand.
+## Game Class
+The game class holds all the methods needed to play the game of blackjack. These methods are just the rules of blackjack in code form. This class does not force validation for its method inputs and refuses to continue if a false input is taken. This class holds all game statistics such as highest win streak, highest bet and highest bank value. In addition, it takes care of creating instances of the deck class and player class, so the main function does not have to worry about it’s organization and only has to call the game methods. 
